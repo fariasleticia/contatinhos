@@ -3,8 +3,8 @@ import { styles } from './styles'
 import { Avatar } from '../avatar'
 
 export function Contact(){
-    return <TouchableOpacity>
-        <Avatar name='Pedroso'/>
+    return <TouchableOpacity style={styles.container}>
+        <Avatar name='Pedroso' image={require("@/assets/avatar.jpeg")}/>
         <Text style={styles.name}>Pedro</Text>
     </TouchableOpacity>
 }
