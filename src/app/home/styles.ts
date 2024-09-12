@@ -29,6 +29,12 @@ export const styles = StyleSheet.create({
 
     },
     contentList: {
-
+        margin: 30,
     },
+    separator: {
+        width: "100%",
+        height: 1,
+        backgroundColor: theme.colors.gray_300,
+        margin: 12,
+    }
 })

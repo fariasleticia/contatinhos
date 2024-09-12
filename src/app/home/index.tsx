@@ -1,6 +1,6 @@
 import { View, Alert, SectionList, Text } from 'react-native'
 import { Feather } from '@expo/vector-icons'
-import { useState, useEffect } from 'react' //*
+import { useState, useEffect, useId } from 'react' //*
 import { styles } from './styles'
 import * as Contacts from 'expo-contacts' //*
 import { theme } from '@/themes'
@@ -20,7 +20,10 @@ export function Home() {
         try {
             const { status } = await Contacts.requestPermissionsAsync()
             if (status === Contacts.PermissionStatus.GRANTED){
-                const { data } = await Contacts.getContactsAsync()
+                const { data } = await Contacts.getContactsAsync({
+                    name,
+                    sort: "firstName",
+                })
                 const list = data.map((contact) => ({
                     id: contact.id ?? useId(),
                     name: contact.name,
@@ -49,7 +52,7 @@ export function Home() {
 
     useEffect(() => {
         fetchContacts()
-    }, [])
+    }, [name])
 
     return (
         <View style={styles.container}>
@@ -62,7 +65,7 @@ export function Home() {
             </View>
 
             <SectionList 
-                sections={[{title: "R", data: [{id: "1", name: "Heloísa"}] }]}
+                sections={contacts}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                    <Contact contact={item}/> 
@@ -70,6 +73,8 @@ export function Home() {
                 renderSectionHeader = {({ section }) => 
                     (<Text style={styles.section}>{section.title}</Text>)}
                 contentContainerStyle = {styles.contentList}
+                showsVerticalScrollIndicator = {false}
+                SectionSeparatorComponent = {() => <View style={styles.separator}/>}
             />  
         </View>
     )

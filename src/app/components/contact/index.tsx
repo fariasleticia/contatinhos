@@ -3,9 +3,9 @@ import { styles } from './styles'
 import { Avatar } from '../avatar'
 
 export type ContactProps = {
-    id: string,
-    name: string,
-    image?: ImageProps,
+    id: string
+    name: string
+    image?: ImageProps
 }
 
 type Props = TouchableOpacityProps & {
