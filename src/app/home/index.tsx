@@ -1,11 +1,17 @@
-import { View, Alert, SectionList, Text } from 'react-native'
+import { useState, useEffect, useId, useRef } from 'react'
+import { Alert, View, SectionList, Text } from 'react-native'
+
 import { Feather } from '@expo/vector-icons'
-import { useState, useEffect, useId } from 'react' //*
+import * as Contacts from 'expo-contacts'
+import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet'
+
 import { styles } from './styles'
-import * as Contacts from 'expo-contacts' //*
 import { theme } from '@/themes'
+
 import { Input } from '@/app/components/input'
 import { Contact, ContactProps } from '@/app/components/contact'
+import { Avatar } from '../components/avatar'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 type SectionListDataProps = {
     title: string
@@ -15,6 +21,18 @@ type SectionListDataProps = {
 export function Home() {
     const [contacts, setContacts] = useState<SectionListDataProps[]>([])
     const [name, setName] = useState("")
+    const [contact, setContact] = useState<Contacts.Contact>()
+
+    const bottomSheetRef = useRef<BottomSheet>(null)
+
+    const handleBottomSheetOpen = () => bottomSheetRef.current?.expand()
+    const handleBottomSheetClose = () => bottomSheetRef.current?.snapToIndex(0)
+
+    async function handleOpenDetails(id: string) {
+        const response = await Contacts.getContactByIdAsync(id)
+        setContact(response)
+        handleBottomSheetOpen()
+    }
 
     async function fetchContacts() {
         try {
@@ -68,14 +86,39 @@ export function Home() {
                 sections={contacts}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                   <Contact contact={item}/> 
+                    <TouchableOpacity
+                        onPress={() => {
+                            handleOpenDetails(item.id)
+                        }} >
+                        <Contact contact={item}/>
+                   </TouchableOpacity>
                 )}
                 renderSectionHeader = {({ section }) => 
                     (<Text style={styles.section}>{section.title}</Text>)}
                 contentContainerStyle = {styles.contentList}
                 showsVerticalScrollIndicator = {false}
                 SectionSeparatorComponent = {() => <View style={styles.separator}/>}
-            />  
+            />
+            {
+                contact &&
+                <BottomSheet ref={bottomSheetRef} snapPoints={[1, 284]} handleComponent={() => null}>
+                    <Avatar name={contact.name} image={contact.image} variant='large'/>
+                    <View style={styles.bottomSheetContent}>
+                        <Text style={styles.contactName}>{contact.name}</Text>
+                    </View>
+                    <View style={styles.phone}>
+                        <Feather name="phone" size={18} color={theme.colors.blue}></Feather>
+                        <Text style={styles.phoneNumber}></Text>
+                    </View>
+                    {
+                        contact.phoneNumbers &&
+                        <View style={styles.phone}>
+                            <Feather name="phone" size={18} color={theme.colors.blue}></Feather>
+                            <Text style={styles.phoneNumber}>{contact.phoneNumbers[0].number}</Text>
+                        </View>
+                    }
+                </BottomSheet>
+            }
         </View>
     )
 }
