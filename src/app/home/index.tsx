@@ -11,6 +11,7 @@ import { theme } from '@/themes'
 import { Input } from '@/app/components/input'
 import { Contact, ContactProps } from '@/app/components/contact'
 import { Avatar } from '../components/avatar'
+import { Button } from '../components/button'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 type SectionListDataProps = {
@@ -118,6 +119,7 @@ export function Home() {
                                 <Text style={styles.phoneNumber}>{contact.phoneNumbers[0].number}</Text>
                             </View>
                         }
+                        <Button title="Fechar" onPress={handleBottomSheetClose}></Button>
                     </View>
                 </BottomSheet>
             }

@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native"
 import { theme } from "@/themes/index"
-import bottomSheet from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheet"
+import BottomSheet from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheet"
 
 export const styles = StyleSheet.create({
     container: {
@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
         textAlign: "center",
         textAlignVertical: "center",
         borderRadius: 12,
-
+        marginLeft: 15,
     },
     contentList: {
         padding: 24,
@@ -54,9 +54,11 @@ export const styles = StyleSheet.create({
         fontFamily: theme.fontFamily.bold,
     },
     phone: {
-
+        margin: 20,
+        flexDirection: "row",
     },
     phoneNumber: {
+        paddingLeft: 10,
         fontSize: 18,
         fontFamily: theme.fontFamily.medium,
         color: theme.colors.gray_400,

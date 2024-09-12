@@ -3,7 +3,8 @@ import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
     name: {
-        color: "#000",
+        fontFamily: theme.fontFamily.medium,
+        fontSize: 18,
     },
     container: {
         width: "100%",

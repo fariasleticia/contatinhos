@@ -17,7 +17,7 @@ type Props = {
     name: string
     image?: ImageProps | null
     variant?: "medium" | "large"
-    containerStyle: StyleProp<ViewStyle>
+    containerStyle?: StyleProp<ViewStyle>
 }
 
 export function Avatar({ image, name, variant="medium", containerStyle }: Props){
