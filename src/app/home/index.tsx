@@ -3,7 +3,7 @@ import { Alert, View, SectionList, Text } from 'react-native'
 
 import { Feather } from '@expo/vector-icons'
 import * as Contacts from 'expo-contacts'
-import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet'
+import BottomSheet from '@gorhom/bottom-sheet'
 
 import { styles } from './styles'
 import { theme } from '@/themes'
@@ -60,6 +60,7 @@ export function Home() {
                     return acc
                 }, [])
                 setContacts(list)
+                setContact(data[0])
             }
         } catch(error) {
             console.log(error)
@@ -101,22 +102,23 @@ export function Home() {
             />
             {
                 contact &&
-                <BottomSheet ref={bottomSheetRef} snapPoints={[1, 284]} handleComponent={() => null}>
-                    <Avatar name={contact.name} image={contact.image} variant='large'/>
+                <BottomSheet 
+                    ref={bottomSheetRef} 
+                    snapPoints={[1, 284]} 
+                    handleComponent={() => null}
+                    backgroundStyle={styles.bottomSheet}
+                    >
+                    <Avatar name={contact.name} image={contact.image} variant='large' containerStyle={styles.image}/>
                     <View style={styles.bottomSheetContent}>
                         <Text style={styles.contactName}>{contact.name}</Text>
+                        {
+                            contact.phoneNumbers &&
+                            <View style={styles.phone}>
+                                <Feather name="phone" size={18} color={theme.colors.gray_400}></Feather>
+                                <Text style={styles.phoneNumber}>{contact.phoneNumbers[0].number}</Text>
+                            </View>
+                        }
                     </View>
-                    <View style={styles.phone}>
-                        <Feather name="phone" size={18} color={theme.colors.blue}></Feather>
-                        <Text style={styles.phoneNumber}></Text>
-                    </View>
-                    {
-                        contact.phoneNumbers &&
-                        <View style={styles.phone}>
-                            <Feather name="phone" size={18} color={theme.colors.blue}></Feather>
-                            <Text style={styles.phoneNumber}>{contact.phoneNumbers[0].number}</Text>
-                        </View>
-                    }
                 </BottomSheet>
             }
         </View>
